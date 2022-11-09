@@ -1,0 +1,9 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+model NewTable {
+    id           String @id @default(uuid())
+    // [ 0/1/3/4 ] --> [ mobile verified/ email verified/ 50% profile completed/ 100% profile completed]
+    profileStage Int
+}

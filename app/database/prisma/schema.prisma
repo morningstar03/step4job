@@ -1,0 +1,34 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  id             String           @id @default(uuid())
+  username       String           @unique @db.VarChar(40)
+  mobile         String           @unique
+  email          String
+  password       String
+  createdAt      DateTime         @default(now())
+  profileStage   ProfileStage[]
+  userPreference UserPreference[]
+}
+
+model ProfileStage {
+  id           String @id @default(uuid())
+  // [ 0/1/3/4 ] --> [ mobile verified/ email verified/ 50% profile completed/ 100% profile completed]
+  profileStage Int
+  user         Users  @relation(fields: [usersId], references: [id])
+  usersId      String
+}
+
+model UserPreference {
+  id           String   @id @default(uuid())
+  emailUpdates Boolean?
+  user         Users    @relation(fields: [usersId], references: [id])
+  usersId      String
+}
